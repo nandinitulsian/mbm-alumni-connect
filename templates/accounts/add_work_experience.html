@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Work Experience - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div style="max-width:640px;margin:0 auto;">
+    <div style="margin-bottom:20px;">
+        <h2 style="font-size:22px;font-weight:700;color:#222;">Add Work Experience</h2>
+        <p style="font-size:14px;color:#888;margin-top:4px;">Share your industry experience with students</p>
+    </div>
+
+    <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:24px;">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Company *</label>
+                    {{ form.company }}
+                    {% if form.company.errors %}<div class="form-errors">{{ form.company.errors }}</div>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Role *</label>
+                    {{ form.role }}
+                    {% if form.role.errors %}<div class="form-errors">{{ form.role.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Job Type</label>
+                    {{ form.job_type }}
+                    {% if form.job_type.errors %}<div class="form-errors">{{ form.job_type.errors }}</div>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Location</label>
+                    {{ form.location }}
+                    {% if form.location.errors %}<div class="form-errors">{{ form.location.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Start Date *</label>
+                    {{ form.start_date }}
+                    {% if form.start_date.errors %}<div class="form-errors">{{ form.start_date.errors }}</div>{% endif %}
+                </div>
+                <div class="form-group" id="end-date-field">
+                    <label style="font-size:13px;font-weight:600;color:#444;">End Date</label>
+                    {{ form.end_date }}
+                    {% if form.end_date.errors %}<div class="form-errors">{{ form.end_date.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    {{ form.is_current }}
+                    <label style="font-size:13px;font-weight:600;color:#444;">I currently work here</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label style="font-size:13px;font-weight:600;color:#444;">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}<div class="form-errors">{{ form.description.errors }}</div>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label style="font-size:13px;font-weight:600;color:#444;">Skills Used</label>
+                {{ form.skills_used }}
+                <div style="font-size:11px;color:#999;margin-top:4px;">Separate with commas e.g. Python, Django, SQL</div>
+                {% if form.skills_used.errors %}<div class="form-errors">{{ form.skills_used.errors }}</div>{% endif %}
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid #f0f0f0;">
+                <button type="submit" class="btn btn-primary" style="flex:2;">
+                    Save Experience
+                </button>
+                <a href="{% url 'profile' %}"
+                   class="btn btn-secondary"
+                   style="flex:1;text-align:center;text-decoration:none;padding:12px;">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const isCurrentCheckbox = document.getElementById('id_is_current');
+    const endDateField = document.getElementById('end-date-field');
+
+    function toggleEndDate() {
+        endDateField.style.opacity = isCurrentCheckbox.checked ? '0.4' : '1';
+        endDateField.style.pointerEvents = isCurrentCheckbox.checked ? 'none' : 'auto';
+    }
+
+    isCurrentCheckbox.addEventListener('change', toggleEndDate);
+    toggleEndDate();
+
+    document.querySelectorAll('select, input[type="text"], input[type="date"], textarea').forEach(el => {
+        el.style.width = '100%';
+        el.style.padding = '10px 14px';
+        el.style.border = '1.5px solid #e0e0e0';
+        el.style.borderRadius = '10px';
+        el.style.fontSize = '14px';
+        el.style.color = '#333';
+        el.style.background = '#fafafa';
+        el.style.outline = 'none';
+        el.style.fontFamily = 'inherit';
+        el.style.boxSizing = 'border-box';
+    });
+});
+</script>
+{% endblock %}

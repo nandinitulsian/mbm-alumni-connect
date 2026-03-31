@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div style="max-width:700px;margin:0 auto;">
+
+    <!-- Post -->
+    <div class="post-card">
+        <div class="post-author">
+            <div class="post-avatar">{{ post.author.full_name|first }}</div>
+            <div class="post-author-info">
+                <div class="name">
+                    {{ post.author.full_name }}
+                    {% if post.post_type == 'query' %}
+                    <span class="post-badge badge-query">Query</span>
+                    {% elif post.post_type == 'resource' %}
+                    <span class="post-badge badge-resource">Resource</span>
+                    {% endif %}
+                    {% if post.author.role == 'alumni' %}
+                    <span class="post-badge badge-alumni">Alumni</span>
+                    {% endif %}
+                </div>
+                <div class="meta">
+                    {{ post.author.branch }} ·
+                    {{ post.category|capfirst }} ·
+                    {{ post.created_at|timesince }} ago
+                </div>
+            </div>
+        </div>
+
+        {% if post.title %}
+        <div style="font-size:18px;font-weight:700;color:#222;margin-bottom:10px;">
+            {{ post.title }}
+        </div>
+        {% endif %}
+
+        <div class="post-content">{{ post.content }}</div>
+
+        <div class="post-footer">
+            <a href="{% url 'like_post' post.id %}" class="post-btn">
+                👍 {{ post.total_likes }} Likes
+            </a>
+            <span class="post-btn">
+                💬 {{ post.total_comments }} Comments
+            </span>
+            {% if post.author == user %}
+            <a href="{% url 'delete_post' post.id %}"
+               class="post-btn"
+               onclick="return confirm('Delete this post?')"
+               style="color:#cc0000;">
+                🗑️ Delete
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Comments -->
+    <div class="feed-card">
+        <div class="widget-title">
+            {{ post.total_comments }} Comments
+        </div>
+
+        {% for comment in comments %}
+        <div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #f0f0f0;">
+            {% if comment.is_alumni_reply %}
+            <div class="alumni-reply">
+                <div class="reply-name">
+                    {{ comment.author.full_name }}
+                    <span class="post-badge badge-alumni">Alumni</span>
+                    · {{ comment.created_at|timesince }} ago
+                </div>
+                <div class="reply-text">{{ comment.content }}</div>
+            </div>
+            {% else %}
+            <div style="display:flex;gap:10px;">
+                <div class="post-avatar" style="width:34px;height:34px;font-size:13px;flex-shrink:0;">
+                    {{ comment.author.full_name|first }}
+                </div>
+                <div>
+                    <div style="font-size:13px;font-weight:600;color:#222;">
+                        {{ comment.author.full_name }}
+                        <span style="font-size:11px;color:#999;font-weight:400;margin-left:6px;">
+                            {{ comment.created_at|timesince }} ago
+                        </span>
+                    </div>
+                    <div style="font-size:13px;color:#444;margin-top:4px;line-height:1.6;">
+                        {{ comment.content }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div style="text-align:center;padding:20px;color:#888;font-size:14px;">
+            No comments yet. Be the first to reply!
+        </div>
+        {% endfor %}
+
+        <!-- Add Comment -->
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid #f0f0f0;">
+            <div style="font-size:14px;font-weight:600;color:#333;margin-bottom:10px;">
+                Add a comment
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.content }}
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:auto;padding:9px 24px;">
+                    Post Comment
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <a href="{% url 'feed' %}"
+       style="display:inline-block;margin-top:8px;color:#0a66c2;text-decoration:none;font-size:13px;">
+        ← Back to Feed
+    </a>
+</div>
+{% endblock %}

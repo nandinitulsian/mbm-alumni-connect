@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MBM Alumni Connect{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    {% if user.is_authenticated %}
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'feed' %}" class="nav-brand">MBM Alumni Connect</a>
+            <div class="nav-links">
+             <a href="{% url 'feed' %}" class="nav-link">Feed</a>
+             <a href="{% url 'opportunities_list' %}" class="nav-link">Opportunities</a>
+             <a href="{% url 'connections_page' %}" class="nav-link">Connections</a>
+             <a href="{% url 'profile' %}" class="nav-link">My Profile</a>
+        </div>
+            <div class="nav-right">
+                <span class="nav-user">{{ user.full_name }}</span>
+                <span class="nav-role {{ user.role }}">{{ user.role }}</span>
+                <a href="{% url 'logout' %}" class="nav-logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <div class="main-container">
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message message-{{ message.tags }}">
+                {{ message }}
+                <span class="message-close" onclick="this.parentElement.remove()">x</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+</body>
+</html>

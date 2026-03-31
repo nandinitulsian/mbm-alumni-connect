@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block title %}Feed - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div class="feed-layout">
+
+    <!-- Left Sidebar -->
+    <div>
+        <div class="feed-card">
+            <div class="profile-banner"></div>
+            <div class="profile-avatar">{{ user.full_name|first }}</div>
+            <div class="profile-name">{{ user.full_name }}</div>
+            <div class="profile-sub">{{ user.branch }}</div>
+            <div class="profile-role-badge">{{ user.role|capfirst }}</div>
+            <a href="{% url 'profile' %}" style="display:block;text-align:center;margin-top:12px;padding:7px;border-radius:8px;font-size:13px;font-weight:500;color:#0a66c2;border:1.5px solid #0a66c2;text-decoration:none;">
+                View Profile
+            </a>
+        </div>
+
+        <div class="feed-card">
+            <div class="widget-title">Filter Posts</div>
+            <div style="display:flex;flex-direction:column;">
+                <a href="{% url 'feed' %}" style="display:block;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;margin-bottom:2px;color:{% if not category and not post_type %}#0a66c2{% else %}#555{% endif %};background:{% if not category and not post_type %}#e8f4fd{% else %}transparent{% endif %};">
+                    📋 All Posts
+                </a>
+                <a href="?type=query" style="display:block;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;margin-bottom:2px;color:{% if post_type == 'query' %}#0a66c2{% else %}#555{% endif %};background:{% if post_type == 'query' %}#e8f4fd{% else %}transparent{% endif %};">
+                    ❓ Queries
+                </a>
+                <a href="?type=resource" style="display:block;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;margin-bottom:2px;color:{% if post_type == 'resource' %}#0a66c2{% else %}#555{% endif %};background:{% if post_type == 'resource' %}#e8f4fd{% else %}transparent{% endif %};">
+                    📚 Resources
+                </a>
+                <a href="?type=general" style="display:block;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;margin-bottom:2px;color:{% if post_type == 'general' %}#0a66c2{% else %}#555{% endif %};background:{% if post_type == 'general' %}#e8f4fd{% else %}transparent{% endif %};">
+                    📝 General
+                </a>
+                <div style="margin:10px 0 6px;font-size:13px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:0.06em;padding:0 10px;border-top:1px solid #f0f0f0;padding-top:10px;">
+                 By Category
+                 </div>
+                <a href="?category=placements" style="display:block;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;margin-bottom:2px;color:{% if category == 'placements' %}#0a66c2{% else %}#555{% endif %};background:{% if category == 'placements' %}#e8f4fd{% else %}transparent{% endif %};">
+                    🎯 Placements
+                </a>
+                <a href="?category=projects" style="display:block;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;margin-bottom:2px;color:{% if category == 'projects' %}#0a66c2{% else %}#555{% endif %};background:{% if category == 'projects' %}#e8f4fd{% else %}transparent{% endif %};">
+                    💻 Projects
+                </a>
+                <a href="?category=internship" style="display:block;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;margin-bottom:2px;color:{% if category == 'internship' %}#0a66c2{% else %}#555{% endif %};background:{% if category == 'internship' %}#e8f4fd{% else %}transparent{% endif %};">
+                    🏢 Internship
+                </a>
+                <a href="?category=technical" style="display:block;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;margin-bottom:2px;color:{% if category == 'technical' %}#0a66c2{% else %}#555{% endif %};background:{% if category == 'technical' %}#e8f4fd{% else %}transparent{% endif %};">
+                    ⚙️ Technical
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Feed -->
+    <div>
+        <!-- Create Post Box -->
+        <div class="feed-card" style="margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                <div class="post-avatar" style="background:#0a66c2;color:#fff;">
+                    {{ user.full_name|first }}
+                </div>
+                <a href="{% url 'create_post' %}"
+                   style="flex:1;padding:12px 18px;border-radius:24px;border:1.5px solid #e0e0e0;color:#888;font-size:14px;text-decoration:none;display:block;background:#f9f9f9;transition:all 0.2s;">
+                    What's on your mind, {{ user.full_name|cut:" Tulsian"|cut:" Sharma"|cut:" Kumar" }}?
+                </a>
+            </div>
+            <div style="display:flex;gap:8px;padding-top:12px;border-top:1px solid #f0f0f0;">
+                <a href="{% url 'create_post' %}?type=query"
+                   style="flex:1;text-align:center;padding:9px;border-radius:8px;font-size:13px;color:#0a66c2;text-decoration:none;font-weight:600;background:#f0f7ff;transition:all 0.2s;">
+                    ❓ Ask Query
+                </a>
+                <a href="{% url 'create_post' %}?type=resource"
+                   style="flex:1;text-align:center;padding:9px;border-radius:8px;font-size:13px;color:#1a7f37;text-decoration:none;font-weight:600;background:#f0f9f4;transition:all 0.2s;">
+                    📚 Resource
+                </a>
+                <a href="{% url 'create_post' %}?type=general"
+                   style="flex:1;text-align:center;padding:9px;border-radius:8px;font-size:13px;color:#666;text-decoration:none;font-weight:600;background:#f5f5f5;transition:all 0.2s;">
+                    📝 Post
+                </a>
+            </div>
+        </div>
+
+        <!-- Posts -->
+        {% if posts %}
+            {% for post in posts %}
+            <div class="post-card" style="margin-bottom:16px;">
+
+                <!-- Post Header -->
+                <div class="post-author">
+                    <div class="post-avatar" style="background:{% if post.author.role == 'alumni' %}#e6f4ea{% else %}#e8f4fd{% endif %};color:{% if post.author.role == 'alumni' %}#1a7f37{% else %}#0a66c2{% endif %};">
+                        {{ post.author.full_name|first }}
+                    </div>
+                    <div class="post-author-info" style="flex:1;">
+                        <div class="name" style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;">
+                            <span style="font-weight:700;color:#222;">{{ post.author.full_name }}</span>
+                            {% if post.author.role == 'alumni' %}
+                            <span class="post-badge badge-alumni">Alumni</span>
+                            {% endif %}
+                            {% if post.post_type == 'query' %}
+                            <span class="post-badge badge-query">Query</span>
+                            {% elif post.post_type == 'resource' %}
+                            <span class="post-badge badge-resource">Resource</span>
+                            {% endif %}
+                        </div>
+                        <div class="meta">
+                            {{ post.author.branch }}
+                            {% if post.category != 'general' %} · {{ post.category|capfirst }}{% endif %}
+                            · {{ post.created_at|timesince }} ago
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post Title -->
+                {% if post.title %}
+                <div style="font-size:16px;font-weight:700;color:#222;margin-bottom:8px;line-height:1.4;">
+                    {{ post.title }}
+                </div>
+                {% endif %}
+
+                <!-- Post Content -->
+                <div class="post-content" style="color:#333;line-height:1.7;">
+                    {{ post.content }}
+                </div>
+
+                <!-- Alumni Reply Preview -->
+                {% for comment in post.comments.all %}
+                    {% if comment.is_alumni_reply %}
+                    <div class="alumni-reply" style="margin-top:12px;">
+                        <div class="reply-name">
+                            {{ comment.author.full_name }}
+                            <span class="post-badge badge-alumni" style="font-size:10px;">Alumni</span>
+                            <span style="font-size:11px;color:#888;font-weight:400;margin-left:4px;">· {{ comment.created_at|timesince }} ago</span>
+                        </div>
+                        <div class="reply-text">{{ comment.content }}</div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- Post Footer -->
+                <div class="post-footer" style="margin-top:12px;">
+    <a href="{% url 'like_post' post.id %}" class="post-btn" style="color:{% if post.total_likes > 0 %}#0a66c2{% else %}#666{% endif %};">
+        {{ post.total_likes }} {% if post.total_likes == 1 %}Like{% else %}Likes{% endif %}
+    </a>
+    <a href="{% url 'post_detail' post.id %}" class="post-btn">
+        {{ post.total_comments }} {% if post.total_comments == 1 %}Comment{% else %}Comments{% endif %}
+    </a>
+    <a href="{% url 'post_detail' post.id %}" class="post-btn" style="color:#0a66c2;">
+        Reply
+    </a>
+    {% if post.author == user %}
+    <a href="{% url 'delete_post' post.id %}"
+       class="post-btn"
+       onclick="return confirm('Delete this post?')"
+       style="color:#cc0000;margin-left:auto;">
+        Delete
+    </a>
+    {% endif %}
+</div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="feed-card" style="text-align:center;padding:50px 40px;">
+                <div style="font-size:48px;margin-bottom:16px;">📭</div>
+                <div style="font-size:18px;font-weight:700;color:#333;margin-bottom:8px;">
+                    No posts yet!
+                </div>
+                <div style="font-size:14px;color:#888;margin-bottom:20px;">
+                    {% if post_type or category %}
+                    No posts found for this filter. Try a different one!
+                    {% else %}
+                    Be the first to post something in the community!
+                    {% endif %}
+                </div>
+                <a href="{% url 'create_post' %}"
+                   style="background:#0a66c2;color:#fff;padding:11px 28px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;">
+                    Create First Post
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Right Sidebar -->
+    <div>
+        <div class="widget-card">
+            <div class="widget-title">Quick Actions</div>
+            <a href="{% url 'create_post' %}"
+               style="display:block;text-align:center;padding:10px;background:#0a66c2;color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;margin-bottom:8px;">
+                ✏️ Create Post
+            </a>
+            <a href="{% url 'opportunities_list' %}"
+               style="display:block;text-align:center;padding:10px;background:#fff;color:#1a7f37;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;border:1.5px solid #1a7f37;margin-bottom:8px;">
+                💼 Opportunities
+            </a>
+            <a href="{% url 'connections_page' %}"
+               style="display:block;text-align:center;padding:10px;background:#fff;color:#0a66c2;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;border:1.5px solid #0a66c2;">
+                👥 Connections
+            </a>
+        </div>
+
+        <div class="widget-card">
+            <div class="widget-title">Post Types</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:#555;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>
+                    <strong>Query</strong> — Ask questions
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="width:10px;height:10px;border-radius:50%;background:#7c3aed;display:inline-block;"></span>
+                    <strong>Resource</strong> — Share materials
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="width:10px;height:10px;border-radius:50%;background:#6b7280;display:inline-block;"></span>
+                    <strong>General</strong> — General posts
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="width:10px;height:10px;border-radius:50%;background:#1a7f37;display:inline-block;"></span>
+                    <strong>Alumni</strong> — From alumni
+                </div>
+            </div>
+        </div>
+
+        <div class="widget-card">
+            <div class="widget-title">Community Stats</div>
+            <div style="font-size:13px;color:#555;line-height:2.2;">
+                <div>📝 Total Posts: {{ posts.count }}</div>
+                <div>👥 Your Role: {{ user.role|capfirst }}</div>
+                <div>🏫 Branch: {{ user.branch|default:"Not set" }}</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

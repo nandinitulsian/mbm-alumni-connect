@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ opportunity.role }} at {{ opportunity.company }} - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div style="max-width:700px;margin:0 auto;">
+
+    <div class="post-card" style="margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:14px;">
+                <div style="width:56px;height:56px;border-radius:12px;background:#e8f4fd;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#0a66c2;">
+                    {{ opportunity.company|first }}
+                </div>
+                <div>
+                    <div style="font-size:18px;font-weight:700;color:#222;">{{ opportunity.role }}</div>
+                    <div style="font-size:14px;color:#555;margin-top:3px;">{{ opportunity.company }}</div>
+                </div>
+            </div>
+            {% if opportunity.type == 'internship' %}
+            <span style="background:#e6f4ea;color:#1a7f37;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid #b3dfc0;">
+                Internship
+            </span>
+            {% else %}
+            <span style="background:#e8f4fd;color:#0a66c2;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid #b3d4f5;">
+                Full-time
+            </span>
+            {% endif %}
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;padding:16px;background:#f9f9f9;border-radius:10px;">
+            {% if opportunity.domain %}
+            <div>
+                <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Domain</div>
+                <div style="font-size:14px;font-weight:500;color:#333;">{{ opportunity.domain }}</div>
+            </div>
+            {% endif %}
+            {% if opportunity.stipend %}
+            <div>
+                <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Stipend / CTC</div>
+                <div style="font-size:14px;font-weight:500;color:#333;">{{ opportunity.stipend }}</div>
+            </div>
+            {% endif %}
+            {% if opportunity.deadline %}
+            <div>
+                <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Deadline</div>
+                <div style="font-size:14px;font-weight:500;color:#333;">{{ opportunity.deadline }}</div>
+            </div>
+            {% endif %}
+            <div>
+                <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Posted by</div>
+                <div style="font-size:14px;font-weight:500;color:#333;">{{ opportunity.posted_by.full_name }}</div>
+            </div>
+        </div>
+
+        <div style="font-size:14px;color:#333;line-height:1.8;margin-bottom:20px;white-space:pre-line;">
+            {{ opportunity.description }}
+        </div>
+
+        <div style="display:flex;gap:10px;padding-top:16px;border-top:1px solid #f0f0f0;">
+            {% if user.role == 'student' %}
+                {% if has_applied %}
+                <span style="padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;color:#1a7f37;border:1.5px solid #1a7f37;background:#e6f4ea;">
+                    ✓ Already Applied
+                </span>
+                {% else %}
+                <a href="{% url 'apply_opportunity' opportunity.id %}"
+                   style="padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;color:#fff;background:#0a66c2;">
+                    Apply Now
+                </a>
+                {% endif %}
+            {% endif %}
+            {% if opportunity.apply_link %}
+            <a href="{{ opportunity.apply_link }}" target="_blank"
+               style="padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;color:#0a66c2;border:1.5px solid #0a66c2;background:#fff;">
+                External Link
+            </a>
+            {% endif %}
+            <a href="{% url 'opportunities_list' %}"
+               style="padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;color:#666;border:1.5px solid #ddd;background:#fff;">
+                ← Back
+            </a>
+        </div>
+    </div>
+
+    {% if applications %}
+    <div class="feed-card">
+        <div class="widget-title">Applications ({{ applications.count }})</div>
+        {% for app in applications %}
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f0f0;">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="post-avatar" style="width:36px;height:36px;font-size:13px;">
+                    {{ app.student.full_name|first }}
+                </div>
+                <div>
+                    <div style="font-size:13px;font-weight:600;color:#222;">{{ app.student.full_name }}</div>
+                    <div style="font-size:11px;color:#999;">Applied {{ app.applied_at|timesince }} ago</div>
+                </div>
+            </div>
+            <span style="font-size:12px;padding:3px 10px;border-radius:12px;background:#e8f4fd;color:#0a66c2;font-weight:500;">
+                {{ app.status|capfirst }}
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

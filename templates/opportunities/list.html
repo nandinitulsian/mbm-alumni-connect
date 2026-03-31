@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}Opportunities - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div class="feed-layout">
+
+    <!-- Left Sidebar -->
+    <div>
+        <div class="widget-card">
+            <div class="widget-title">Filter</div>
+            <div style="display:flex;flex-direction:column;">
+                <a href="{% url 'opportunities_list' %}"
+                   style="display:block;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;margin-bottom:2px;color:{% if not type_filter %}#0a66c2{% else %}#555{% endif %};background:{% if not type_filter %}#e8f4fd{% else %}transparent{% endif %};">
+                    All Opportunities
+                </a>
+                <a href="?type=internship"
+                   style="display:block;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;margin-bottom:2px;color:{% if type_filter == 'internship' %}#0a66c2{% else %}#555{% endif %};background:{% if type_filter == 'internship' %}#e8f4fd{% else %}transparent{% endif %};">
+                    Internships
+                </a>
+                <a href="?type=job"
+                   style="display:block;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;margin-bottom:2px;color:{% if type_filter == 'job' %}#0a66c2{% else %}#555{% endif %};background:{% if type_filter == 'job' %}#e8f4fd{% else %}transparent{% endif %};">
+                    Full-time Jobs
+                </a>
+            </div>
+        </div>
+
+        {% if user.role == 'alumni' %}
+        <div class="widget-card">
+            <div class="widget-title">Post an Opportunity</div>
+            <p style="font-size:13px;color:#888;margin-bottom:12px;">
+                Share internships or job openings with students!
+            </p>
+            <a href="{% url 'post_opportunity' %}"
+               style="display:block;text-align:center;padding:9px;background:#0a66c2;color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;">
+                Post Opportunity
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Main Content -->
+    <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h2 style="font-size:18px;font-weight:700;color:#222;">
+                {% if type_filter == 'internship' %}Internships
+                {% elif type_filter == 'job' %}Full-time Jobs
+                {% else %}All Opportunities
+                {% endif %}
+            </h2>
+            {% if user.role == 'alumni' %}
+            <a href="{% url 'post_opportunity' %}"
+               style="padding:8px 18px;background:#0a66c2;color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;">
+                + Post
+            </a>
+            {% endif %}
+        </div>
+
+        {% if opportunities %}
+            {% for opp in opportunities %}
+            <div class="post-card" style="margin-bottom:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:48px;height:48px;border-radius:10px;background:#e8f4fd;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#0a66c2;flex-shrink:0;">
+                            {{ opp.company|first }}
+                        </div>
+                        <div>
+                            <div style="font-size:15px;font-weight:700;color:#222;">{{ opp.role }}</div>
+                            <div style="font-size:13px;color:#555;margin-top:2px;">{{ opp.company }}</div>
+                        </div>
+                    </div>
+                    <div>
+                        {% if opp.type == 'internship' %}
+                        <span style="background:#e6f4ea;color:#1a7f37;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #b3dfc0;">
+                            Internship
+                        </span>
+                        {% else %}
+                        <span style="background:#e8f4fd;color:#0a66c2;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #b3d4f5;">
+                            Full-time
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap;">
+                    {% if opp.domain %}
+                    <span style="font-size:12px;color:#666;">
+                        🏷️ {{ opp.domain }}
+                    </span>
+                    {% endif %}
+                    {% if opp.stipend %}
+                    <span style="font-size:12px;color:#666;">
+                        💰 {{ opp.stipend }}
+                    </span>
+                    {% endif %}
+                    {% if opp.deadline %}
+                    <span style="font-size:12px;color:#666;">
+                        📅 Deadline: {{ opp.deadline }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div style="font-size:13px;color:#555;line-height:1.6;margin-bottom:14px;">
+                    {{ opp.description|truncatewords:30 }}
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid #f0f0f0;">
+                    <div style="font-size:12px;color:#999;">
+                        Posted by {{ opp.posted_by.full_name }} · {{ opp.created_at|timesince }} ago
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <a href="{% url 'opportunity_detail' opp.id %}"
+                           style="padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;color:#0a66c2;border:1.5px solid #0a66c2;background:#fff;">
+                            View Details
+                        </a>
+                        {% if user.role == 'student' %}
+                            {% if opp.id in applied_ids %}
+                            <span style="padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;color:#1a7f37;border:1.5px solid #1a7f37;background:#e6f4ea;">
+                                ✓ Applied
+                            </span>
+                            {% else %}
+                            <a href="{% url 'apply_opportunity' opp.id %}"
+                               style="padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;color:#fff;background:#0a66c2;">
+                                Apply Now
+                            </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="feed-card" style="text-align:center;padding:40px;">
+                <div style="font-size:40px;margin-bottom:12px;">💼</div>
+                <div style="font-size:16px;font-weight:600;color:#333;margin-bottom:6px;">
+                    No opportunities yet!
+                </div>
+                <div style="font-size:14px;color:#888;margin-bottom:16px;">
+                    {% if user.role == 'alumni' %}
+                    Be the first to post an opportunity for students!
+                    {% else %}
+                    Check back later for internships and jobs posted by alumni!
+                    {% endif %}
+                </div>
+                {% if user.role == 'alumni' %}
+                <a href="{% url 'post_opportunity' %}"
+                   style="background:#0a66c2;color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">
+                    Post Opportunity
+                </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Right Sidebar -->
+    <div>
+        <div class="widget-card">
+            <div class="widget-title">Quick Stats</div>
+            <div style="font-size:13px;color:#555;line-height:2;">
+                <div>💼 Total: {{ opportunities.count }}</div>
+                <div>🎓 Internships: {{ opportunities|length }}</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

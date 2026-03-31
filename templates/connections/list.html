@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Connections - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div class="feed-layout">
+    <div>
+        <div class="widget-card">
+            <div class="widget-title">Connections</div>
+            <p style="font-size:13px;color:#666;line-height:1.6;">
+                {% if user.role == 'student' %}
+                Discover alumni and send connection requests.
+                {% else %}
+                Review student requests and grow your network.
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div>
+        {% if user.role == 'student' %}
+        <div class="feed-card" style="margin-bottom:16px;">
+            <div class="widget-title">Find Alumni</div>
+            {% for alumni in suggestions %}
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f0f0f0;">
+                <div>
+                    <div style="font-size:14px;font-weight:600;color:#222;">{{ alumni.full_name }}</div>
+                    <div style="font-size:12px;color:#777;">{{ alumni.branch }}{% if alumni.alumni_profile.current_company %} · {{ alumni.alumni_profile.current_company }}{% endif %}</div>
+                </div>
+                <div style="display:flex;gap:8px;">
+                    <a href="{% url 'profile_view' alumni.id %}" style="padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;color:#0a66c2;border:1.5px solid #0a66c2;background:#fff;">View</a>
+                    <a href="{% url 'send_connection_request' alumni.id %}" style="padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;color:#fff;background:#0a66c2;">Connect</a>
+                </div>
+            </div>
+            {% empty %}
+            <p style="font-size:13px;color:#888;">No alumni available right now.</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="feed-card" style="margin-bottom:16px;">
+            <div class="widget-title">
+                {% if user.role == 'student' %}My Requests{% else %}Incoming Requests{% endif %}
+            </div>
+            {% for connection in sent_requests %}
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f0f0f0;">
+                <div>
+                    <div style="font-size:14px;font-weight:600;color:#222;">
+                        {% if user.role == 'student' %}{{ connection.alumni.full_name }}{% else %}{{ connection.student.full_name }}{% endif %}
+                    </div>
+                    <div style="font-size:12px;color:#777;">Status: {{ connection.status|capfirst }}</div>
+                </div>
+                {% if user.role == 'alumni' and connection.status == 'pending' %}
+                <div style="display:flex;gap:8px;">
+                    <a href="{% url 'respond_connection_request' connection.id 'accept' %}" style="padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;color:#fff;background:#1a7f37;">Accept</a>
+                    <a href="{% url 'respond_connection_request' connection.id 'reject' %}" style="padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;color:#c5221f;border:1.5px solid #c5221f;background:#fff;">Reject</a>
+                </div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p style="font-size:13px;color:#888;">No connection requests yet.</p>
+            {% endfor %}
+        </div>
+
+        <div class="feed-card">
+            <div class="widget-title">Accepted Connections</div>
+            {% for connection in accepted_connections %}
+            <div style="padding:12px 0;border-bottom:1px solid #f0f0f0;">
+                <div style="font-size:14px;font-weight:600;color:#222;">
+                    {% if user.role == 'student' %}{{ connection.alumni.full_name }}{% else %}{{ connection.student.full_name }}{% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p style="font-size:13px;color:#888;">No accepted connections yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div>
+        <div class="widget-card">
+            <div class="widget-title">Tips</div>
+            <p style="font-size:13px;color:#666;line-height:1.7;">
+                Strong profiles and clear skills make connection requests more useful.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

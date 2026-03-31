@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ profile_user.full_name }} - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div style="display:grid;grid-template-columns:230px 1fr 210px;gap:16px;max-width:1100px;margin:0 auto;">
+
+    <!-- LEFT COLUMN -->
+    <div>
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;overflow:hidden;margin-bottom:14px;">
+            <div style="height:65px;background:#0a66c2;"></div>
+            <div style="padding:0 16px 16px;">
+                <div style="width:56px;height:56px;border-radius:50%;background:#e8f4fd;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#0a66c2;margin-top:-28px;margin-bottom:10px;">
+                    {{ profile_user.full_name|first }}
+                </div>
+                <div style="font-size:15px;font-weight:700;color:#222;">{{ profile_user.full_name }}</div>
+                <div style="font-size:12px;color:#888;margin-top:3px;">
+                    {% if student_profile %}
+                        B.Tech {{ profile_user.branch }} · {{ student_profile.current_year }}{% if student_profile.current_year == 1 %}st{% elif student_profile.current_year == 2 %}nd{% elif student_profile.current_year == 3 %}rd{% else %}th{% endif %} Year
+                    {% else %}
+                        {{ profile_user.branch }}
+                    {% endif %}
+                </div>
+                <div style="display:inline-flex;padding:3px 10px;border-radius:12px;font-size:11px;margin-top:8px;background:#e8f4fd;color:#0a66c2;border:1px solid #b3d4f5;">
+                    {{ profile_user.role|capfirst }}
+                </div>
+                <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+                    {% if student_profile %}
+                        {% if student_profile.github_url %}
+                        <a href="{{ student_profile.github_url }}" target="_blank" style="padding:5px 12px;border-radius:8px;font-size:12px;font-weight:500;text-decoration:none;background:#f0f0f0;color:#333;">GitHub</a>
+                        {% endif %}
+                        {% if student_profile.linkedin_url %}
+                        <a href="{{ student_profile.linkedin_url }}" target="_blank" style="padding:5px 12px;border-radius:8px;font-size:12px;font-weight:500;text-decoration:none;background:#e8f4fd;color:#0a66c2;">LinkedIn</a>
+                        {% endif %}
+                    {% endif %}
+                    {% if alumni_profile %}
+                        {% if alumni_profile.github_url %}
+                        <a href="{{ alumni_profile.github_url }}" target="_blank" style="padding:5px 12px;border-radius:8px;font-size:12px;font-weight:500;text-decoration:none;background:#f0f0f0;color:#333;">GitHub</a>
+                        {% endif %}
+                        {% if alumni_profile.linkedin_url %}
+                        <a href="{{ alumni_profile.linkedin_url }}" target="_blank" style="padding:5px 12px;border-radius:8px;font-size:12px;font-weight:500;text-decoration:none;background:#e8f4fd;color:#0a66c2;">LinkedIn</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% if is_own_profile %}
+                <a href="{% url 'edit_profile' %}" style="display:block;text-align:center;margin-top:12px;padding:8px;border-radius:8px;font-size:13px;font-weight:600;color:#0a66c2;border:1.5px solid #0a66c2;text-decoration:none;">
+                    Edit Profile
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if student_profile %}
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px;margin-bottom:14px;">
+            <div style="font-size:14px;font-weight:700;color:#222;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f0f0f0;">Academic Info</div>
+            {% if student_profile.roll_no %}
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;">
+                <span style="color:#888;">Roll No</span>
+                <span style="font-weight:600;color:#222;">{{ student_profile.roll_no }}</span>
+            </div>
+            {% endif %}
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;">
+                <span style="color:#888;">Year</span>
+                <span style="font-weight:600;color:#222;">{{ student_profile.current_year }}{% if student_profile.current_year == 1 %}st{% elif student_profile.current_year == 2 %}nd{% elif student_profile.current_year == 3 %}rd{% else %}th{% endif %} Year</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;">
+                <span style="color:#888;">Branch</span>
+                <span style="font-weight:600;color:#222;">{{ profile_user.branch|default:"Not set" }}</span>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if alumni_profile %}
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px;margin-bottom:14px;">
+            <div style="font-size:14px;font-weight:700;color:#222;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f0f0f0;">Work Info</div>
+            {% if alumni_profile.current_company %}
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;">
+                <span style="color:#888;">Company</span>
+                <span style="font-weight:600;color:#222;">{{ alumni_profile.current_company }}</span>
+            </div>
+            {% endif %}
+            {% if alumni_profile.job_title %}
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;">
+                <span style="color:#888;">Role</span>
+                <span style="font-weight:600;color:#222;">{{ alumni_profile.job_title }}</span>
+            </div>
+            {% endif %}
+            {% if alumni_profile.domain %}
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;">
+                <span style="color:#888;">Domain</span>
+                <span style="font-weight:600;color:#222;">{{ alumni_profile.domain }}</span>
+            </div>
+            {% endif %}
+            {% if alumni_profile.graduation_year %}
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;">
+                <span style="color:#888;">Batch</span>
+                <span style="font-weight:600;color:#222;">{{ alumni_profile.graduation_year }}</span>
+            </div>
+            {% endif %}
+            <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;">
+                <span style="color:#888;">Experience</span>
+                <span style="font-weight:600;color:#222;">{{ alumni_profile.experience_years }} years</span>
+            </div>
+            <div style="margin-top:10px;">
+                {% if alumni_profile.verification_status == 'verified' %}
+                <span style="background:#e6f4ea;color:#1a7f37;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:500;">✓ Verified</span>
+                {% elif alumni_profile.verification_status == 'pending' %}
+                <span style="background:#fff8e6;color:#b45309;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:500;">⏳ Pending</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if skills %}
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px;margin-bottom:14px;">
+            <div style="font-size:14px;font-weight:700;color:#222;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f0f0f0;">Skills</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                {% for skill in skills %}
+                <span style="background:#e8f4fd;color:#0a66c2;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid #b3d4f5;">{{ skill.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px;margin-bottom:14px;">
+            <div style="font-size:14px;font-weight:700;color:#222;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f0f0f0;">Contact</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;">
+                <span style="color:#888;">Email</span>
+                <span style="font-weight:500;color:#0a66c2;font-size:11px;word-break:break-all;text-align:right;max-width:140px;">{{ profile_user.email }}</span>
+            </div>
+            {% if profile_user.phone %}
+            <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;">
+                <span style="color:#888;">Phone</span>
+                <span style="font-weight:500;color:#222;">{{ profile_user.phone }}</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- MIDDLE COLUMN -->
+    <div>
+        <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;">
+            <a href="?tab=posts" style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;border:1.5px solid {% if tab != 'queries' and tab != 'liked' %}#0a66c2{% else %}#e0e0e0{% endif %};background:{% if tab != 'queries' and tab != 'liked' %}#e8f4fd{% else %}#fff{% endif %};color:{% if tab != 'queries' and tab != 'liked' %}#0a66c2{% else %}#555{% endif %};">
+                My Posts
+            </a>
+            <a href="?tab=queries" style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;border:1.5px solid {% if tab == 'queries' %}#0a66c2{% else %}#e0e0e0{% endif %};background:{% if tab == 'queries' %}#e8f4fd{% else %}#fff{% endif %};color:{% if tab == 'queries' %}#0a66c2{% else %}#555{% endif %};">
+                My Queries
+            </a>
+            <a href="?tab=liked" style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;border:1.5px solid {% if tab == 'liked' %}#0a66c2{% else %}#e0e0e0{% endif %};background:{% if tab == 'liked' %}#e8f4fd{% else %}#fff{% endif %};color:{% if tab == 'liked' %}#0a66c2{% else %}#555{% endif %};">
+                Liked Posts
+            </a>
+        </div>
+
+        {% if posts %}
+            {% for post in posts %}
+            <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px;margin-bottom:14px;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                    <div style="width:38px;height:38px;border-radius:50%;background:{% if post.author.role == 'alumni' %}#e6f4ea{% else %}#e8f4fd{% endif %};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:{% if post.author.role == 'alumni' %}#1a7f37{% else %}#0a66c2{% endif %};flex-shrink:0;">
+                        {{ post.author.full_name|first }}
+                    </div>
+                    <div style="flex:1;">
+                        <div style="font-size:13px;font-weight:600;color:#222;display:flex;align-items:center;flex-wrap:wrap;gap:4px;">
+                            {{ post.author.full_name }}
+                            {% if post.post_type == 'query' %}
+                            <span style="background:#fff8e6;color:#b45309;padding:1px 8px;border-radius:8px;font-size:11px;border:1px solid #fde68a;">Query</span>
+                            {% elif post.post_type == 'resource' %}
+                            <span style="background:#f0f0ff;color:#4338ca;padding:1px 8px;border-radius:8px;font-size:11px;border:1px solid #c7d2fe;">Resource</span>
+                            {% endif %}
+                        </div>
+                        <div style="font-size:11px;color:#888;margin-top:2px;">
+                            {{ post.author.branch }} · {{ post.category|capfirst }} · {{ post.created_at|timesince }} ago
+                        </div>
+                    </div>
+                </div>
+                {% if post.title %}
+                <div style="font-size:15px;font-weight:700;color:#222;margin-bottom:8px;">{{ post.title }}</div>
+                {% endif %}
+                <div style="font-size:13px;color:#444;line-height:1.7;margin-bottom:12px;">{{ post.content }}</div>
+                {% for comment in post.comments.all %}
+                    {% if comment.is_alumni_reply %}
+                    <div style="background:#f0f9f4;border-left:3px solid #1a7f37;border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:10px;">
+                        <div style="font-size:12px;font-weight:600;color:#1a7f37;margin-bottom:3px;">
+                            {{ comment.author.full_name }}
+                            <span style="background:#e6f4ea;color:#1a7f37;padding:1px 7px;border-radius:8px;font-size:10px;margin-left:4px;">Alumni</span>
+                        </div>
+                        <div style="font-size:12px;color:#444;line-height:1.6;">{{ comment.content }}</div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                <div style="display:flex;gap:10px;padding-top:10px;border-top:1px solid #f0f0f0;">
+                    <a href="{% url 'like_post' post.id %}" style="font-size:13px;color:#666;text-decoration:none;padding:5px 10px;border-radius:6px;">{{ post.total_likes }} Likes</a>
+                    <a href="{% url 'post_detail' post.id %}" style="font-size:13px;color:#666;text-decoration:none;padding:5px 10px;border-radius:6px;">{{ post.total_comments }} Comments</a>
+                    <a href="{% url 'post_detail' post.id %}" style="font-size:13px;color:#0a66c2;text-decoration:none;padding:5px 10px;border-radius:6px;font-weight:500;">View Post</a>
+                    {% if is_own_profile %}
+                    <a href="{% url 'delete_post' post.id %}" onclick="return confirm('Delete this post?')" style="font-size:13px;color:#cc0000;text-decoration:none;padding:5px 10px;border-radius:6px;margin-left:auto;">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:40px;text-align:center;">
+                <div style="font-size:36px;margin-bottom:12px;">📭</div>
+                <div style="font-size:15px;font-weight:600;color:#333;margin-bottom:6px;">No posts yet!</div>
+                <div style="font-size:13px;color:#888;margin-bottom:16px;">
+                    {% if tab == 'queries' %}No queries posted yet.
+                    {% elif tab == 'liked' %}No liked posts yet.
+                    {% else %}No posts yet.{% endif %}
+                </div>
+                {% if is_own_profile %}
+                <a href="{% url 'create_post' %}" style="background:#0a66c2;color:#fff;padding:9px 22px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;">Create First Post</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div style="background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:12px;text-align:center;">
+                <div style="font-size:22px;font-weight:700;color:#222;">{{ posts.count }}</div>
+                <div style="font-size:11px;color:#888;margin-top:2px;">Posts</div>
+            </div>
+            <div style="background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:12px;text-align:center;">
+                <div style="font-size:22px;font-weight:700;color:#222;">{{ connections_count }}</div>
+                <div style="font-size:11px;color:#888;margin-top:2px;">Connections</div>
+            </div>
+        </div>
+
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px;margin-bottom:12px;">
+            <div style="font-size:14px;font-weight:700;color:#222;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #f0f0f0;">About</div>
+            <p style="font-size:13px;color:#555;line-height:1.7;">{{ profile_user.bio|default:"No bio added yet." }}</p>
+            {% if is_own_profile and not profile_user.bio %}
+            <a href="{% url 'edit_profile' %}" style="font-size:12px;color:#0a66c2;text-decoration:none;margin-top:8px;display:inline-block;">+ Add bio</a>
+            {% endif %}
+        </div>
+
+        {% if alumni_profile %}
+        <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f0f0f0;">
+                <div style="font-size:14px;font-weight:700;color:#222;">Work Experience</div>
+                {% if is_own_profile %}
+                <a href="{% url 'add_work_experience' %}" style="font-size:12px;color:#0a66c2;text-decoration:none;font-weight:500;">+ Add</a>
+                {% endif %}
+            </div>
+            {% if work_experiences %}
+                {% for exp in work_experiences %}
+                <div style="margin-bottom:18px;padding-bottom:18px;border-bottom:{% if not forloop.last %}1px solid #f5f5f5{% else %}none{% endif %};">
+                    <div style="display:flex;align-items:flex-start;gap:10px;">
+                        <div style="width:38px;height:38px;border-radius:8px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#444;flex-shrink:0;border:1px solid #e8e8e8;">
+                            {{ exp.company|first }}
+                        </div>
+                        <div style="flex:1;min-width:0;">
+                            <div style="font-size:13px;font-weight:700;color:#222;margin-bottom:2px;">
+                                {{ exp.role }}
+                                {% if exp.is_current %}
+                                <span style="background:#e6f4ea;color:#1a7f37;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:500;">Current</span>
+                                {% endif %}
+                            </div>
+                            <div style="font-size:12px;color:#555;margin-bottom:2px;">{{ exp.company }} · {{ exp.get_job_type_display }}</div>
+                            <div style="font-size:11px;color:#999;">
+                                {{ exp.start_date|date:"M Y" }} — {% if exp.is_current %}Present{% else %}{{ exp.end_date|date:"M Y" }}{% endif %}
+                                {% if exp.location %} · {{ exp.location }}{% endif %}
+                            </div>
+                            {% if exp.description %}
+                            <div style="font-size:12px;color:#666;line-height:1.6;margin-top:6px;">{{ exp.description|truncatewords:25 }}</div>
+                            {% endif %}
+                            {% if is_own_profile %}
+                            <a href="{% url 'delete_work_experience' exp.id %}" onclick="return confirm('Delete this experience?')" style="font-size:11px;color:#cc0000;text-decoration:none;margin-top:5px;display:inline-block;">Delete</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="font-size:13px;color:#888;">No work experience added yet.</p>
+                {% if is_own_profile %}
+                <a href="{% url 'add_work_experience' %}" style="font-size:12px;color:#0a66c2;text-decoration:none;margin-top:6px;display:inline-block;">+ Add your first experience</a>
+                {% endif %}
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+{% endblock %}

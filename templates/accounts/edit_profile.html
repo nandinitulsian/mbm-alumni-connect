@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div style="max-width:600px;margin:0 auto;">
+    <div class="feed-card">
+        <div class="widget-title">Edit Profile</div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <div class="form-errors">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="form-group">
+                <label>Skills (comma separated)</label>
+                <input type="text" name="skills" value="{{ skills_str }}" placeholder="e.g. Python, Django, SQL">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{% url 'profile' %}" class="btn btn-secondary" style="display:block;text-align:center;text-decoration:none;margin-top:10px;padding:11px;">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

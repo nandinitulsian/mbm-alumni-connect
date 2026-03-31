@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Registration - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-logo">MBM Alumni Connect</div>
+        <div class="auth-title">Create Student Account</div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                <div style="font-size:11px;color:#999;margin-top:4px;">
+                    {{ field.help_text }}
+                </div>
+                {% endif %}
+                {% if field.errors %}
+                <div class="form-errors">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">
+                Create Account
+            </button>
+        </form>
+
+        <div class="auth-link">
+            Already have an account? <a href="{% url 'login' %}">Sign in</a>
+        </div>
+        <div class="auth-link">
+            Are you alumni? <a href="{% url 'register_alumni' %}">Register here</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

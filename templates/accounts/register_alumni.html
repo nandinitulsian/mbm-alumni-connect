@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Alumni Registration{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-logo">MBM Alumni Connect</div>
+        <div class="auth-title">Create Alumni Account</div>
+
+        <div class="message message-success" style="margin-bottom:16px;">
+            Your account will be verified by admin before you can post.
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <div class="form-errors">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Submit for Verification</button>
+        </form>
+
+        <div class="auth-link">
+            Already have an account? <a href="{% url 'login' %}">Sign in</a>
+        </div>
+        <div class="auth-link">
+            Are you a student? <a href="{% url 'register_student' %}">Register here</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

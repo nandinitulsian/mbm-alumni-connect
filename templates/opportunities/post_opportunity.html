@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Post Opportunity - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div style="max-width:680px;margin:0 auto;">
+    <div style="margin-bottom:20px;">
+        <h2 style="font-size:22px;font-weight:700;color:#222;">Post an Opportunity</h2>
+        <p style="font-size:14px;color:#888;margin-top:4px;">Help students find great internships and jobs!</p>
+    </div>
+
+    <div class="feed-card">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Company <span style="color:#c5221f;">*</span></label>
+                    {{ form.company }}
+                    {% if form.company.errors %}<div class="form-errors">{{ form.company.errors }}</div>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Role <span style="color:#c5221f;">*</span></label>
+                    {{ form.role }}
+                    {% if form.role.errors %}<div class="form-errors">{{ form.role.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Type <span style="color:#c5221f;">*</span></label>
+                    {{ form.type }}
+                    {% if form.type.errors %}<div class="form-errors">{{ form.type.errors }}</div>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Domain</label>
+                    {{ form.domain }}
+                    {% if form.domain.errors %}<div class="form-errors">{{ form.domain.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Stipend / CTC</label>
+                    {{ form.stipend }}
+                    {% if form.stipend.errors %}<div class="form-errors">{{ form.stipend.errors }}</div>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Application Deadline</label>
+                    {{ form.deadline }}
+                    {% if form.deadline.errors %}<div class="form-errors">{{ form.deadline.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label style="font-size:13px;font-weight:600;color:#444;">Apply Link</label>
+                {{ form.apply_link }}
+                {% if form.apply_link.errors %}<div class="form-errors">{{ form.apply_link.errors }}</div>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label style="font-size:13px;font-weight:600;color:#444;">Description <span style="color:#c5221f;">*</span></label>
+                {{ form.description }}
+                {% if form.description.errors %}<div class="form-errors">{{ form.description.errors }}</div>{% endif %}
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid #f0f0f0;">
+                <button type="submit" class="btn btn-primary" style="flex:2;">
+                    Post Opportunity
+                </button>
+                <a href="{% url 'opportunities_list' %}"
+                   class="btn btn-secondary"
+                   style="flex:1;text-align:center;text-decoration:none;padding:12px;">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('select, input, textarea').forEach(el => {
+        el.style.width = '100%';
+        el.style.padding = '10px 14px';
+        el.style.border = '1.5px solid #e0e0e0';
+        el.style.borderRadius = '10px';
+        el.style.fontSize = '14px';
+        el.style.color = '#333';
+        el.style.background = '#fafafa';
+        el.style.outline = 'none';
+        el.style.fontFamily = 'inherit';
+        el.style.boxSizing = 'border-box';
+    });
+});
+</script>
+{% endblock %}

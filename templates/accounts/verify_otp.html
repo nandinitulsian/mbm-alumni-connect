@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Verify OTP - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-logo">MBM Alumni Connect</div>
+        <div class="auth-title">Verify Your Account</div>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="message message-{{ message.tags }}" style="margin-bottom:16px;">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- TESTING ONLY — shows OTP directly on page -->
+        {% if user.otp %}
+        <div style="background:#fff8e6;border:2px dashed #f59e0b;border-radius:10px;padding:16px;text-align:center;margin-bottom:20px;">
+            <p style="font-size:12px;color:#b45309;margin-bottom:6px;font-weight:600;">
+                TESTING MODE — Your OTP is:
+            </p>
+            <p style="font-size:32px;font-weight:700;color:#b45309;letter-spacing:8px;">
+                {{ user.otp }}
+            </p>
+            <p style="font-size:11px;color:#999;margin-top:6px;">
+                This box will be removed in production
+            </p>
+        </div>
+        {% endif %}
+
+        <p style="font-size:13px;color:#888;text-align:center;margin-bottom:20px;">
+            Enter the 6-digit OTP to verify your account
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Enter OTP</label>
+                <input
+                    type="text"
+                    name="otp"
+                    maxlength="6"
+                    placeholder="Enter 6-digit OTP"
+                    style="text-align:center;font-size:24px;font-weight:600;letter-spacing:8px;"
+                    autofocus
+                >
+            </div>
+            <button type="submit" class="btn btn-primary">Verify OTP</button>
+        </form>
+
+        <div style="text-align:center;margin-top:16px;">
+            <a href="{% url 'resend_otp' %}"
+               style="font-size:13px;color:#0a66c2;text-decoration:none;font-weight:500;">
+                Resend OTP
+            </a>
+        </div>
+
+        <div class="auth-link">
+            <a href="{% url 'register_student' %}" style="color:#888;">
+                Go back to registration
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

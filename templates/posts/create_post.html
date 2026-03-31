@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Post - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div style="max-width:680px;margin:0 auto;">
+
+    <!-- Header -->
+    <div style="margin-bottom:20px;">
+        <h2 style="font-size:22px;font-weight:700;color:#222;">Create a Post</h2>
+        <p style="font-size:14px;color:#888;margin-top:4px;">Share something with the MBM community</p>
+    </div>
+
+    <div class="feed-card">
+
+        <!-- Post Type Selector -->
+        <div style="display:flex;gap:10px;margin-bottom:24px;">
+            <label style="flex:1;cursor:pointer;">
+                <input type="radio" name="post_type_select" value="query" style="display:none;" onclick="setType('query')">
+                <div id="btn-query" style="text-align:center;padding:12px;border-radius:10px;border:2px solid #e0e0e0;transition:all 0.2s;">
+                    <div style="font-size:20px;margin-bottom:4px;">❓</div>
+                    <div style="font-size:13px;font-weight:600;color:#555;">Ask a Query</div>
+                </div>
+            </label>
+            <label style="flex:1;cursor:pointer;">
+                <input type="radio" name="post_type_select" value="resource" style="display:none;" onclick="setType('resource')">
+                <div id="btn-resource" style="text-align:center;padding:12px;border-radius:10px;border:2px solid #e0e0e0;transition:all 0.2s;">
+                    <div style="font-size:20px;margin-bottom:4px;">📚</div>
+                    <div style="font-size:13px;font-weight:600;color:#555;">Share Resource</div>
+                </div>
+            </label>
+            <label style="flex:1;cursor:pointer;">
+                <input type="radio" name="post_type_select" value="general" style="display:none;" onclick="setType('general')">
+                <div id="btn-general" style="text-align:center;padding:12px;border-radius:10px;border:2px solid #e0e0e0;transition:all 0.2s;">
+                    <div style="font-size:20px;margin-bottom:4px;">📝</div>
+                    <div style="font-size:13px;font-weight:600;color:#555;">General Post</div>
+                </div>
+            </label>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Hidden post type -->
+            <div style="display:none;">
+                {{ form.post_type }}
+            </div>
+
+            <!-- Title -->
+            <div class="form-group">
+                <label style="font-size:13px;font-weight:600;color:#444;">Title <span style="color:#999;font-weight:400;">(optional)</span></label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                <div class="form-errors">{{ form.title.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Content -->
+            <div class="form-group">
+                <label style="font-size:13px;font-weight:600;color:#444;">Content <span style="color:#c5221f;">*</span></label>
+                {{ form.content }}
+                {% if form.content.errors %}
+                <div class="form-errors">{{ form.content.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Category & Visibility in a row -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Category</label>
+                    {{ form.category }}
+                    {% if form.category.errors %}
+                    <div class="form-errors">{{ form.category.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label style="font-size:13px;font-weight:600;color:#444;">Visibility</label>
+                    {{ form.visibility }}
+                    {% if form.visibility.errors %}
+                    <div class="form-errors">{{ form.visibility.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Target Branch (only show if branch specific) -->
+            <div class="form-group" id="branch-field" style="display:none;">
+                <label style="font-size:13px;font-weight:600;color:#444;">Target Branch</label>
+                {{ form.target_branch }}
+                {% if form.target_branch.errors %}
+                <div class="form-errors">{{ form.target_branch.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Buttons -->
+            <div style="display:flex;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid #f0f0f0;">
+                <button type="submit" class="btn btn-primary" style="flex:2;">
+                    Post
+                </button>
+                <a href="{% url 'feed' %}"
+                   class="btn btn-secondary"
+                   style="flex:1;text-align:center;text-decoration:none;padding:12px;">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function setType(type) {
+    document.getElementById('id_post_type').value = type;
+    const btns = ['query', 'resource', 'general'];
+    btns.forEach(b => {
+        const el = document.getElementById('btn-' + b);
+        if (b === type) {
+            el.style.borderColor = '#0a66c2';
+            el.style.background = '#e8f4fd';
+        } else {
+            el.style.borderColor = '#e0e0e0';
+            el.style.background = '#fff';
+        }
+    });
+}
+
+document.getElementById('id_visibility').addEventListener('change', function() {
+    const branchField = document.getElementById('branch-field');
+    if (this.value === 'branch') {
+        branchField.style.display = 'block';
+    } else {
+        branchField.style.display = 'none';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    setType('general');
+    const select = document.querySelectorAll('select');
+    select.forEach(s => {
+        s.style.width = '100%';
+        s.style.padding = '10px 14px';
+        s.style.border = '1.5px solid #e0e0e0';
+        s.style.borderRadius = '10px';
+        s.style.fontSize = '14px';
+        s.style.color = '#333';
+        s.style.background = '#fafafa';
+        s.style.outline = 'none';
+        s.style.cursor = 'pointer';
+    });
+    const textarea = document.querySelector('textarea');
+    if (textarea) {
+        textarea.style.width = '100%';
+        textarea.style.padding = '11px 15px';
+        textarea.style.border = '1.5px solid #e0e0e0';
+        textarea.style.borderRadius = '10px';
+        textarea.style.fontSize = '14px';
+        textarea.style.color = '#333';
+        textarea.style.background = '#fafafa';
+        textarea.style.outline = 'none';
+        textarea.style.resize = 'vertical';
+        textarea.style.fontFamily = 'inherit';
+    }
+});
+</script>
+{% endblock %}

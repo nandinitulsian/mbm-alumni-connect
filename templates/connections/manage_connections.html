@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Connections - MBM Alumni Connect{% endblock %}
+
+{% block content %}
+<div class="feed-layout">
+
+    <!-- Left Sidebar -->
+    <div>
+        <div class="feed-card">
+            <div class="profile-banner"></div>
+            <div class="profile-avatar">{{ user.full_name|first }}</div>
+            <div class="profile-name">{{ user.full_name }}</div>
+            <div class="profile-sub">{{ user.branch }}</div>
+            <div class="profile-role-badge">{{ user.role|capfirst }}</div>
+        </div>
+
+        <div class="widget-card">
+            <div class="widget-title">Network Stats</div>
+            <div style="font-size:13px;color:#555;line-height:2;">
+                <div>⏳ Pending: {{ pending_requests.count }}</div>
+                <div>🤝 Connected: {{ accepted_connections.count }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div>
+        <!-- Pending Requests -->
+        <div style="margin-bottom:16px;">
+            <h2 style="font-size:18px;font-weight:700;color:#222;margin-bottom:14px;">
+                Pending Requests
+                {% if pending_requests.count > 0 %}
+                <span style="background:#fce8e6;color:#c5221f;padding:2px 10px;border-radius:12px;font-size:13px;margin-left:8px;">
+                    {{ pending_requests.count }}
+                </span>
+                {% endif %}
+            </h2>
+
+            {% if pending_requests %}
+                {% for conn in pending_requests %}
+                <div class="post-card" style="margin-bottom:12px;">
+                    <div style="display:flex;align-items:center;gap:14px;">
+                        <div style="width:48px;height:48px;border-radius:50%;background:#e8f4fd;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#0a66c2;flex-shrink:0;">
+                            {{ conn.student.full_name|first }}
+                        </div>
+                        <div style="flex:1;">
+                            <div style="font-size:14px;font-weight:600;color:#222;">
+                                {{ conn.student.full_name }}
+                                <span style="background:#e8f4fd;color:#0a66c2;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;margin-left:6px;">
+                                    Student
+                                </span>
+                            </div>
+                            <div style="font-size:12px;color:#888;margin-top:2px;">
+                                {{ conn.student.branch }} · Sent {{ conn.created_at|timesince }} ago
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:8px;">
+                            <a href="{% url 'accept_connection' conn.id %}"
+                               style="padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;color:#fff;background:#1a7f37;">
+                                Accept
+                            </a>
+                            <a href="{% url 'reject_connection' conn.id %}"
+                               style="padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;color:#c5221f;border:1.5px solid #c5221f;background:#fff;">
+                                Decline
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="feed-card" style="text-align:center;padding:24px;margin-bottom:16px;">
+                    <div style="font-size:14px;color:#888;">No pending requests</div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Accepted Connections -->
+        <div>
+            <h2 style="font-size:18px;font-weight:700;color:#222;margin-bottom:14px;">
+                My Connections
+            </h2>
+
+            {% if accepted_connections %}
+                {% for conn in accepted_connections %}
+                <div class="post-card" style="margin-bottom:12px;">
+                    <div style="display:flex;align-items:center;gap:14px;">
+                        <div style="width:48px;height:48px;border-radius:50%;background:#e8f4fd;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#0a66c2;flex-shrink:0;">
+                            {{ conn.student.full_name|first }}
+                        </div>
+                        <div style="flex:1;">
+                            <div style="font-size:14px;font-weight:600;color:#222;">
+                                {{ conn.student.full_name }}
+                            </div>
+                            <div style="font-size:12px;color:#888;margin-top:2px;">
+                                {{ conn.student.branch }} · Connected {{ conn.updated_at|timesince }} ago
+                            </div>
+                        </div>
+                        <span style="padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;color:#1a7f37;border:1.5px solid #1a7f37;background:#e6f4ea;">
+                            ✓ Connected
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="feed-card" style="text-align:center;padding:24px;">
+                    <div style="font-size:14px;color:#888;">No connections yet</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div>
+        <div class="widget-card">
+            <div class="widget-title">Tips</div>
+            <div style="font-size:12px;color:#666;line-height:1.8;">
+                <div>✅ Accept requests from students</div>
+                <div>💬 Help them with queries</div>
+                <div>🚀 Share opportunities</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
