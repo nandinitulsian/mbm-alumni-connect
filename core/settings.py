@@ -6,7 +6,12 @@ SECRET_KEY = 'django-insecure-universityhub-secret-key-change-in-production'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*',
+    '.vercel.app',
+    '127.0.0.1',
+    'localhost',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -87,5 +92,9 @@ LOGIN_REDIRECT_URL = '/posts/feed/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 CSRF_COOKIE_SECURE = False
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://localhost:8000']
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+    'https://*.vercel.app',
+]
 SESSION_COOKIE_SECURE = False
