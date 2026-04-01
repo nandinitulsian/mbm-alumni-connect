@@ -1,0 +1,623 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f2ef;
+    color: #333;
+}
+
+/* ── Navbar ── */
+.navbar {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.nav-brand {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0a66c2;
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: -0.3px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2px;
+    flex: 1;
+}
+
+.nav-link {
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #555;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    background: #f0f7ff;
+    color: #0a66c2;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-user {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+}
+
+.nav-role {
+    font-size: 11px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+}
+
+.nav-role.student {
+    background: #e8f4fd;
+    color: #0a66c2;
+    border: 1px solid #b3d4f5;
+}
+
+.nav-role.alumni {
+    background: #e6f4ea;
+    color: #1a7f37;
+    border: 1px solid #b3dfc0;
+}
+
+.nav-logout {
+    font-size: 13px;
+    color: #666;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.nav-logout:hover {
+    background: #fff0f0;
+    color: #cc0000;
+    border-color: #ffb3b3;
+}
+
+/* ── Main container ── */
+.main-container {
+    max-width: 1100px;
+    margin: 28px auto;
+    padding: 0 24px;
+}
+
+/* ── Messages ── */
+.messages { margin-bottom: 20px; }
+
+.message {
+    padding: 13px 18px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+}
+
+.message-success {
+    background: #e6f4ea;
+    color: #1a7f37;
+    border: 1px solid #b3dfc0;
+}
+
+.message-error {
+    background: #fce8e6;
+    color: #c5221f;
+    border: 1px solid #f5c6c5;
+}
+
+.message-close {
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.5;
+    margin-left: 12px;
+}
+
+.message-close:hover { opacity: 1; }
+
+/* ── Auth pages ── */
+.auth-container {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e8e8e8;
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 460px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+.auth-logo {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0a66c2;
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+}
+
+.auth-tagline {
+    font-size: 14px;
+    color: #999;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+/* ── Forms ── */
+.form-group { margin-bottom: 18px; }
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 7px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 11px 15px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #333;
+    transition: all 0.2s;
+    outline: none;
+    background: #fafafa;
+}
+
+.form-group input:focus {
+    border-color: #0a66c2;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(10,102,194,0.08);
+}
+
+.form-errors {
+    color: #c5221f;
+    font-size: 12px;
+    margin-top: 5px;
+    padding-left: 2px;
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+}
+
+.btn-primary {
+    background: #0a66c2;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #004182;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #fff;
+    color: #0a66c2;
+    border: 1.5px solid #0a66c2;
+    margin-top: 10px;
+}
+
+.btn-secondary:hover {
+    background: #e8f4fd;
+}
+
+.auth-divider {
+    text-align: center;
+    color: #aaa;
+    font-size: 13px;
+    margin: 20px 0;
+    position: relative;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 42%;
+    height: 1px;
+    background: #e8e8e8;
+}
+
+.auth-divider::before { left: 0; }
+.auth-divider::after  { right: 0; }
+
+.auth-link {
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    margin-top: 16px;
+}
+
+.auth-link a {
+    color: #0a66c2;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-link a:hover { text-decoration: underline; }
+
+/* ── Role cards ── */
+.role-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.role-card {
+    border: 2px solid #e8e8e8;
+    border-radius: 14px;
+    padding: 28px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.2s;
+    display: block;
+    background: #fafafa;
+}
+
+.role-card:hover {
+    border-color: #0a66c2;
+    background: #f0f7ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(10,102,194,0.1);
+}
+
+.role-card-icon { font-size: 38px; margin-bottom: 12px; }
+
+.role-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 8px;
+}
+
+.role-card-desc {
+    font-size: 12px;
+    color: #999;
+    line-height: 1.6;
+}
+
+/* ── Feed layout ── */
+.feed-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr 240px;
+    gap: 20px;
+    align-items: start;
+}
+
+/* ── Feed sidebar card ── */
+.feed-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e8e8e8;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.profile-banner {
+    height: 70px;
+    background: linear-gradient(135deg, #0a66c2, #0050a0);
+    border-radius: 10px 10px 0 0;
+    margin: -20px -20px 0 -20px;
+}
+
+.profile-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #e8f4fd;
+    border: 3px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0a66c2;
+    margin-top: -28px;
+    margin-bottom: 10px;
+}
+
+.profile-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+}
+
+.profile-sub {
+    font-size: 12px;
+    color: #999;
+    margin-top: 3px;
+}
+
+.profile-role-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: capitalize;
+    background: #e8f4fd;
+    color: #0a66c2;
+    border: 1px solid #b3d4f5;
+}
+
+/* ── Post card ── */
+.post-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e8e8e8;
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.2s;
+}
+
+.post-card:hover {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.post-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.post-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e8f4fd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0a66c2;
+    flex-shrink: 0;
+}
+
+.post-author-info .name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+}
+
+.post-author-info .meta {
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+}
+
+.post-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.badge-query    { background: #fff8e6; color: #b45309; border: 1px solid #fde68a; }
+.badge-resource { background: #f0f0ff; color: #4338ca; border: 1px solid #c7d2fe; }
+.badge-alumni   { background: #e6f4ea; color: #1a7f37; border: 1px solid #b3dfc0; }
+.badge-job      { background: #e6f4ea; color: #1a7f37; border: 1px solid #b3dfc0; }
+
+.post-content {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.7;
+    margin-bottom: 14px;
+}
+
+.post-footer {
+    display: flex;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.post-btn {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.post-btn:hover {
+    background: #f0f7ff;
+    color: #0a66c2;
+}
+
+/* ── Alumni reply ── */
+.alumni-reply {
+    background: #f0f9f4;
+    border-left: 3px solid #1a7f37;
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin-top: 10px;
+}
+
+.alumni-reply .reply-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a7f37;
+    margin-bottom: 4px;
+}
+
+.alumni-reply .reply-text {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.6;
+}
+
+/* ── Widget card (right sidebar) ── */
+.widget-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e8e8e8;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.widget-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.alumni-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.alumni-item:last-child { border-bottom: none; }
+
+.alumni-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e8f4fd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0a66c2;
+    flex-shrink: 0;
+}
+
+.alumni-info { flex: 1; }
+
+.alumni-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #222;
+}
+
+.alumni-company {
+    font-size: 11px;
+    color: #999;
+    margin-top: 1px;
+}
+
+.connect-btn {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 16px;
+    border: 1.5px solid #0a66c2;
+    color: #0a66c2;
+    background: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.connect-btn:hover {
+    background: #0a66c2;
+    color: #fff;
+}
+
+   /* ── Filter links ── */
+.filter-link {
+    display: block;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    margin-bottom: 4px;
+    transition: all 0.2s;
+    font-weight: 500;
+    width: 100%;
+}
+
+.filter-link:hover {
+    background: #f0f7ff;
+    color: #0a66c2;
+}
+
+.filter-link.active {
+    background: #e8f4fd;
+    color: #0a66c2;
+    font-weight: 600;
+    }
