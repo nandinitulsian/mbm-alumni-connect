@@ -1,6 +1,6 @@
 from pathlib import Path
 from decouple import config
-import os
+from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -59,25 +59,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Database
-DATABASE_URL = os.environ.get('DATABASE_URL')
+# Database — PostgreSQL only (decouple reads os.environ first, then .env)
+DATABASE_URL = config('DATABASE_URL', default=None)
 
-if DATABASE_URL:
-    import dj_database_url
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=DATABASE_URL,
-            conn_max_age=600,
-            ssl_require=False
-        )
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+if not DATABASE_URL:
+    raise ImproperlyConfigured(
+        'Set DATABASE_URL in your environment or .env file, e.g. '
+        'DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/mbm'
+    )
+
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=DATABASE_URL,
+        conn_max_age=600,
+        ssl_require=False,
+    )
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
